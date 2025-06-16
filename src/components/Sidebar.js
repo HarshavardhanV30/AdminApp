@@ -1,0 +1,18 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FaTachometerAlt, FaUsers, FaBox, FaShoppingCart, FaBell,} from 'react-icons/fa';
+
+const Sidebar = () => (
+  <div className="sidebar">
+    <h2 className="brand">GBuyers</h2>
+    <ul>
+      <li><Link to="/dashboard"><FaTachometerAlt style={{ marginRight: '10px' }} />Dashboard</Link></li>
+      <li><Link to="/users"><FaUsers style={{ marginRight: '10px' }} />Users</Link></li>
+      <li><Link to="/products"><FaBox style={{ marginRight: '10px' }} />Products</Link></li>
+      <li><Link to="/orders"><FaShoppingCart style={{ marginRight: '10px' }} />Orders</Link></li>
+      <li><Link to="/notifications"><FaBell style={{ marginRight: '10px' }} />Notifications</Link></li>
+    </ul>
+  </div>
+);
+
+export default Sidebar;
