@@ -1,27 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import axios from 'axios';
 
 const UserManagement = () => {
-  const users = [
-    {
-      id: '#001',
-      name: 'Sarah Johnson',
-      email: 'sarah@example.com',
-      role: 'Admin',
-      status: 'Active',
-      date: '2023-06-15',
-      avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-    },
-    {
-      id: '#002',
-      name: 'John Smith',
-      email: 'john@example.com',
-      role: 'User',
-      status: 'Blocked',
-      date: '2023-06-14',
-      avatar: 'https://randomuser.me/api/portraits/men/2.jpg',
-    },
-  ];
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  // Fetch users from API
+  const fetchUsers = async () => {
+    try {
+      const res = await axios.get('https://fakestoreapi.com/users');
+      setUsers(res.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  // Delete user using real API call
+  const deleteUser = async (id) => {
+    const confirm = window.confirm('Are you sure you want to delete this user?');
+    if (!confirm) return;
+    try {
+      const res = await axios.delete(`https://fakestoreapi.com/users/${id}`);
+      console.log('User deleted:', res.data);
+      alert(`Deleted user ID: ${id}`);
+      fetchUsers();
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div style={styles.page}>
@@ -32,17 +43,6 @@ const UserManagement = () => {
 
       <div style={styles.controls}>
         <input type="text" placeholder="🔍 Search users..." className="form-control" style={styles.search} />
-        <select className="form-select" style={styles.select}>
-          <option>All Roles</option>
-          <option>User</option>
-        </select>
-        <select className="form-select" style={styles.select}>
-          <option>All Status</option>
-          <option>Active</option>
-          <option>Active</option>
-        </select>
-        
-        <button className="btn btn-success">✅ Unblock Selected</button>
       </div>
 
       <table className="table table-hover">
@@ -50,43 +50,59 @@ const UserManagement = () => {
           <tr>
             <th><input type="checkbox" /></th>
             <th>ID</th>
-            <th>Name</th>
+            <th>Full Name</th>
             <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Created Date</th>
+            <th>Username</th>
+            <th>Phone</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {users.map(user => (
-            <tr key={user.id}>
+            <tr key={user.id} onClick={() => setSelectedUser(user)} style={{ cursor: 'pointer' }}>
               <td><input type="checkbox" /></td>
               <td>{user.id}</td>
-              <td>
-                <img src={user.avatar} alt="avatar" style={styles.avatar} />
-                {user.name}
-              </td>
+              <td>{user.name.firstname} {user.name.lastname}</td>
               <td>{user.email}</td>
-              <td>
-                <span className={`badge ${user.role === 'Active' ? 'bg-primary' : 'bg-secondary'}`}>
-                  {user.role}
-                </span>
-              </td>
-              <td>
-                <span className={`badge ${user.status === 'Active' ? 'bg-success' : 'bg-danger'}`}>
-                  {user.status}
-                </span>
-              </td>
-              <td>{user.date}</td>
+              <td>{user.username}</td>
+              <td>{user.phone}</td>
               <td>
                 <FaEdit style={styles.iconEdit} />
-                <FaTrash style={styles.iconTrash} />
+                <FaTrash
+                  style={styles.iconTrash}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteUser(user.id);
+                  }}
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Modal for User Details */}
+      {selectedUser && (
+        <div style={styles.modalOverlay} onClick={() => setSelectedUser(null)}>
+          <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <h5>User Details</h5>
+            <p><strong>ID:</strong> {selectedUser.id}</p>
+            <p><strong>Full Name:</strong> {selectedUser.name.firstname} {selectedUser.name.lastname}</p>
+            <p><strong>Email:</strong> {selectedUser.email}</p>
+            <p><strong>Username:</strong> {selectedUser.username}</p>
+            <p><strong>Password:</strong> {selectedUser.password}</p>
+            <p><strong>Phone:</strong> {selectedUser.phone}</p>
+            <p><strong>Address:</strong><br />
+              {selectedUser.address.number} {selectedUser.address.street},<br />
+              {selectedUser.address.city} - {selectedUser.address.zipcode}
+            </p>
+            <p><strong>Geo Location:</strong><br />
+              Latitude: {selectedUser.address.geolocation.lat}, Longitude: {selectedUser.address.geolocation.long}
+            </p>
+            <button className="btn btn-secondary mt-2" onClick={() => setSelectedUser(null)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -112,16 +128,6 @@ const styles = {
   search: {
     maxWidth: '200px',
   },
-  select: {
-    maxWidth: '150px',
-  },
-  avatar: {
-    width: '32px',
-    height: '32px',
-    borderRadius: '50%',
-    marginRight: '8px',
-    objectFit: 'cover',
-  },
   iconEdit: {
     color: '#007bff',
     marginRight: '10px',
@@ -130,6 +136,24 @@ const styles = {
   iconTrash: {
     color: 'red',
     cursor: 'pointer',
+  },
+  modalOverlay: {
+    position: 'fixed',
+    top: 0, left: 0,
+    width: '100%', height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9999,
+  },
+  modal: {
+    backgroundColor: '#fff',
+    padding: '20px',
+    borderRadius: '8px',
+    width: '400px',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+    textAlign: 'left',
   },
 };
 

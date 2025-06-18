@@ -51,9 +51,9 @@ body, html, #root {
 }
 
 .main-content {
-  margin-left: 250px;
+  margin-left: 425px;
   padding: 20px;
-  background: #f5f5f5;
+  background: #f7f2f229;
   min-height: 100%;
   box-sizing: border-box;
 }

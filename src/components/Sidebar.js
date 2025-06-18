@@ -11,6 +11,8 @@ const Sidebar = () => (
       <li><Link to="/products"><FaBox style={{ marginRight: '10px' }} />Products</Link></li>
       <li><Link to="/orders"><FaShoppingCart style={{ marginRight: '10px' }} />Orders</Link></li>
       <li><Link to="/notifications"><FaBell style={{ marginRight: '10px' }} />Notifications</Link></li>
+      <li><Link to="/SellerTable"><FaUsers style={{ marginRight: '10px' }} />Seller Details</Link></li>
+      <li><Link to="/GoldLoanRequest"><FaUsers style={{ marginRight: '10px' }} />GoldLoanRequest</Link></li>
     </ul>
   </div>
 );

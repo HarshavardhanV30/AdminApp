@@ -9,6 +9,8 @@ import Orders from './pages/Orders';
 import Notifications from './pages/Notifications';
 import AddProduct from './pages/AddProduct';
 import Login from './pages/Login';
+import SellerTable from './pages/SellerTable';
+import GoldLoanRequest from './pages/GoldLoanRequest';  
 import './App.css';
 
 const App = () => (
@@ -24,7 +26,8 @@ const App = () => (
           <Route path="/orders" element={<Orders />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/addproduct" element={<AddProduct />}/>
-          
+          <Route path="/SellerTable" element={<SellerTable />} />
+          <Route path='/GoldLoanRequest' element={<GoldLoanRequest/>} />
         </Routes>
       </div>
     </div>
