@@ -11,6 +11,10 @@ import AddProduct from './pages/AddProduct';
 import Login from './pages/Login';
 import SellerTable from './pages/SellerTable';
 import GoldLoanRequest from './pages/GoldLoanRequest';  
+import SignupForm from './pages/signupform';
+import LoginForm from './pages/Loginform';
+import SellGoldForm from './pages/SellGoldForm';
+import GoldLoanRequestForm from './pages/GoldLoanRequestForm';
 import './App.css';
 
 const App = () => (
@@ -28,6 +32,11 @@ const App = () => (
           <Route path="/addproduct" element={<AddProduct />}/>
           <Route path="/SellerTable" element={<SellerTable />} />
           <Route path='/GoldLoanRequest' element={<GoldLoanRequest/>} />
+          <Route path="/signup" element={<SignupForm/>} />
+          <Route path="/Login" element={<LoginForm/>} />
+          <Route path="/SellGoldform" element={<SellGoldForm/>} />
+          <Route path="/GoldLoanRequestForm" element={<GoldLoanRequestForm/>} />
+
         </Routes>
       </div>
     </div>
