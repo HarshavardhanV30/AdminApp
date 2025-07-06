@@ -15,8 +15,10 @@ import SignupForm from './pages/signupform';
 import LoginForm from './pages/Loginform';
 import SellGoldForm from './pages/SellGoldForm';
 import GoldLoanRequestForm from './pages/GoldLoanRequestForm';
+import Editprofile from './pages/editprofile';
 import './App.css';
-
+import AddDeliveryAddress from './pages/addDeliveryAddress';
+import SelectDeliveryAddress from './pages/SelectDeliveryAddress';
 const App = () => (
   <Router>
     <div className="app-layout">
@@ -36,7 +38,9 @@ const App = () => (
           <Route path="/Login" element={<LoginForm/>} />
           <Route path="/SellGoldform" element={<SellGoldForm/>} />
           <Route path="/GoldLoanRequestForm" element={<GoldLoanRequestForm/>} />
-
+          <Route path="/EditProfile" element={<Editprofile/>}/>
+          <Route path="/addAddress" element={<AddDeliveryAddress/>}/>
+          <Route path="/selectDelivery" element={<SelectDeliveryAddress/>}/>
         </Routes>
       </div>
     </div>
